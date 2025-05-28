@@ -14,7 +14,7 @@ API Django para detecção de objetos em streams de vídeo usando YOLO.
 
 1. Clone o repositório
 ```bash
-git clone <seu-repositorio>
+git clone (https://github.com/LuisIanoski/API-ObjectDetection.git)
 cd API-extração-img
 ```
 
