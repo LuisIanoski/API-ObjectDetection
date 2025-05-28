@@ -1,8 +1,43 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-.env
-frames/
-.vscode/
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media
+
+# Virtual Environment
 nenv/
+venv/
+ENV/
+
+# VS Code
+.vscode/
+
+# YOLO weights
 *.pt
+
+# Project specific
+frames/
