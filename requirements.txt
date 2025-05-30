@@ -1,5 +1,7 @@
-python-dateutil>=2.8.2
-ultralytics>=8.0.0
-opencv-python>=4.8.0
-torch>=2.0.0
-pymongo>=4.6.0
+django==5.2.1
+djangorestframework
+opencv-python
+pymongo
+ultralytics
+numpy
+torch
