@@ -23,6 +23,36 @@ class Camera:
         self.last_detection_time = None
         self.detection_interval = timedelta(seconds=15)
 
+    def get_detections(self, date: str = None):
+        """
+        Recupera as detecções armazenadas no MongoDB
+        Args:
+            date: Data opcional para filtrar (formato: YYYY-MM-DD)
+        Returns:
+            Lista de detecções
+        """
+        query = {"camera_id": self.camera_id}
+        
+        if date:
+            # Converte string para datetime
+            start_date = datetime.strptime(date, '%Y-%m-%d')
+            end_date = start_date + timedelta(days=1)
+            
+            # Adiciona filtro de data à query
+            query["timestamp"] = {
+                "$gte": start_date,
+                "$lt": end_date
+            }
+        
+        # Busca as detecções no MongoDB
+        detections = list(self.collection.find(query))
+        
+        # Converte ObjectId para string para serialização JSON
+        for detection in detections:
+            detection["_id"] = str(detection["_id"])
+            
+        return detections
+    
     def generate_frames(self):
         """
         Gera frames do stream da câmera com as detecções em tempo real

@@ -1,11 +1,6 @@
 django==5.2.1
 djangorestframework
 opencv-python
-pymongo
 ultralytics
 numpy
-<<<<<<< HEAD
 torch
-=======
-torch
->>>>>>> e0f5a2f035a8b99c7e42b4e059b773e29fdcb9d6
