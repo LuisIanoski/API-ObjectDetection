@@ -123,4 +123,4 @@ API-ObjectDetection/
 
 - Intervalo entre detecções: 15 segundos (ajustável em `camera/services.py`)
 - Confiança mínima: 0.45 (ajustável em `camera/object_detector.py`)
-- Modelo YOLO: YOLO12x (configurável para outros modelos)
+- Modelo YOLO: YOLO11s (configurável para outros modelos)
