@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Dashboard</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Camera Monitoring Dashboard</h1>
+            <div class="current-time" id="currentTime"></div>
+        </div>
+        
+        <div class="main-content">
+            <div class="video-section">
+                <h2>Camera Feed</h2>
+                <div class="video-container">
+                    <img id="cameraFeed" src="" alt="Camera Feed">
+                </div>
+                <div class="camera-status">
+                    Status: <span id="cameraStatus">Connecting...</span>
+                </div>
+            </div>
+
+            <div class="detections-section">
+                <h2>Latest Detections</h2>
+                <table id="detectionsTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Object</th>
+                            <th>Confidence</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detectionsBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

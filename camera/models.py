@@ -13,3 +13,21 @@ class Camera(models.Model):
 
     class Meta:
         db_table = 'cameras'
+
+class Detection(models.Model):
+    camera = models.ForeignKey(Camera, on_delete=models.CASCADE, related_name='camera_detections')
+    timestamp = models.DateTimeField()
+    class_name = models.CharField(max_length=100)
+    confidence = models.FloatField()
+    bbox_x = models.FloatField()
+    bbox_y = models.FloatField()
+    bbox_width = models.FloatField()
+    bbox_height = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'camera_detections'
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"Detection {self.class_name} at {self.timestamp}"

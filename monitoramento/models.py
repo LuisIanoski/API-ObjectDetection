@@ -3,12 +3,12 @@ from camera.models import Camera
 
 class Detection(models.Model):
     detection_id = models.AutoField(primary_key=True)
-    camera = models.ForeignKey(Camera, on_delete=models.CASCADE, related_name='detections')
+    camera = models.ForeignKey(Camera, on_delete=models.CASCADE, related_name='monitoring_detections')
     detection_date = models.DateField()
     detection_time = models.TimeField()
-    detections = models.JSONField()  # Stores the detection array
+    detections = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'detections'
+        db_table = 'monitoring_detections'
         ordering = ['-detection_date', '-detection_time']
