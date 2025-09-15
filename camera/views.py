@@ -2,6 +2,8 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.response import Response
 from .models import Camera
 from .serializers import CameraSerializer
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import AllowAny
 
 class IsAdminUserOrReadOnly(permissions.BasePermission):
     """
@@ -35,3 +37,16 @@ class CameraViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+@authentication_classes([])
+def camera_status(request, camera_id):
+    try:
+        camera = Camera.objects.get(camera_id=camera_id)
+        return Response({
+            'camera_status': camera.camera_status,
+            'last_updated': camera.updated_at
+        })
+    except Camera.DoesNotExist:
+        return Response({'error': 'Camera not found'}, status=404)

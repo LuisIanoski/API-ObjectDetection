@@ -4,42 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camera Dashboard</title>
-    <link rel="stylesheet" href="/static/css/dashboard.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
-    <div class="dashboard">
+    <div class="dashboard" data-dashboard-id="{{ dashboard_id }}">
         <div class="header">
             <h1>Camera Monitoring Dashboard</h1>
-            <div class="current-time" id="currentTime"></div>
         </div>
-        
-        <div class="main-content">
-            <div class="video-section">
-                <h2>Camera Feed</h2>
-                <div class="video-container">
-                    <img id="cameraFeed" src="" alt="Camera Feed">
-                </div>
-                <div class="camera-status">
-                    Status: <span id="cameraStatus">Connecting...</span>
+
+        <div class="cam-info">
+            <div class="camera-details">
+                <p>Camera: 
+                    <select id="cameraSelect" class="camera-select">
+                        <option value="">Selecione uma câmera</option>
+                        {% for camera in cameras %}
+                            <option value="{{ camera.id }}">{{ camera.id }} - {{ camera.location }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>Status: <span id="cameraStatus">Aguardando...</span></p>
+            </div>
+        </div>
+        <div class="video-section">
+            <h2>Camera Feed</h2>
+            <div class="video-container">
+                <img id="cameraFeed" src="" alt="Camera Feed">
+            </div>
+            <div class="video-datetime">
+                <div class="current-time" id="currentTime"></div>
+            </div>
+            <div class="weather">
+                <div id="weather-container">
+                  
                 </div>
             </div>
-
-            <div class="detections-section">
-                <h2>Latest Detections</h2>
+        </div>
+        <div class="place-risk">
+            <div>
+                <h2 id="place-name">Connecting...</h2>
+                <div id="place-loc">Loading...</div>
+            </div>
+            <div>
+                <h2 class='place-'> Risco:</h2>
+                <div id="riskLevel">Loading...</div>
+            </div>
+        </div>
+        <div class="detections-table">
                 <table id="detectionsTable">
                     <thead>
                         <tr>
-                            <th>Time</th>
-                            <th>Object</th>
-                            <th>Confidence</th>
+                            <th>Horário</th>
+                            <th>Objeto</th>
+                            <th>Confiança</th>
                         </tr>
                     </thead>
-                    <tbody id="detectionsBody">
-                    </tbody>
+                    <tbody id="detectionsBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
-    <script src="/static/js/dashboard.js"></script>
+
+    <script>
+        // Initialize dashboard ID before loading dashboard.js
+        window.DASHBOARD_ID = "{{ dashboard_id }}";
+    </script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
 </body>
 </html>

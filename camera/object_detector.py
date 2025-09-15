@@ -4,7 +4,7 @@ import numpy as np
 import torch
 
 class ObjectDetector:
-    def __init__(self, model_path: str = "yolo12x.pt", confidence: float = 0.45):
+    def __init__(self, model_path: str = "yolo11s.pt", confidence: float = 0.45):
         self.model = YOLO(model_path)
         self.confidence = confidence
         self.model.to('cuda' if torch.cuda.is_available() else 'cpu')

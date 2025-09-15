@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Dashboards</title>
+    <link rel="stylesheet" href="/static/css/dashboard_management.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Criar Dashboard -->
+        <section class="create-dashboard">
+            <h2>Criar Novo Dashboard</h2>
+            <form id="dashboardForm">
+                <input type="text" id="dashboardId" placeholder="ID do Dashboard" required>
+                <input type="text" id="dashboardName" placeholder="Nome do Dashboard" required>
+                <button type="submit">Criar Dashboard</button>
+            </form>
+        </section>
+
+        <!-- Lista de Dashboards -->
+        <section class="dashboard-list">
+            <h2>Dashboards Existentes</h2>
+            <div id="dashboardsList"></div>
+        </section>
+
+        <!-- Adicionar Câmera -->
+        <section class="add-camera">
+            <h2>Adicionar Câmera ao Dashboard</h2>
+            <form id="cameraForm">
+                <select id="dashboardSelect" required>
+                    <option value="">Selecione um Dashboard</option>
+                </select>
+                <input type="text" id="cameraId" placeholder="ID da Câmera" required>
+                <input type="text" id="cameraLink" placeholder="Link da Câmera" required>
+                <input type="text" id="cameraLoc" placeholder="Localização da Câmera" required>
+                <select id="cameraStatus" required>
+                    <option value="active">Ativo</option>
+                    <option value="inactive">Inativo</option>
+                </select>
+                <button type="submit">Adicionar Câmera</button>
+            </form>
+        </section>
+    </div>
+    <script src="/static/js/dashboard_management.js"></script>
+</body>
+</html>

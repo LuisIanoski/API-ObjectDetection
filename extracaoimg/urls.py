@@ -17,11 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from dashboard.views import DashboardView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('camera.urls')),
     path('api/', include('monitoramento.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('', TemplateView.as_view(template_name='dashboard.html'), name='dashboard'),
+    path('manage/', TemplateView.as_view(template_name='dashboard_management.html'), name='dashboard-management'),
+    path('dashboard/<str:dashboard_id>/', DashboardView.as_view(), name='dashboard-view'),
+    path('api/dashboards/', include('dashboard.urls', namespace='dashboard')),
 ]
