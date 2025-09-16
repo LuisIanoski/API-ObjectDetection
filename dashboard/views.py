@@ -21,13 +21,16 @@ class DashboardView(TemplateView):
             context.update({
                 'dashboard_id': dashboard_id,
                 'dashboard_name': dashboard.name,
+                'dashboard_risco': dashboard.risco,
+                'dashboard_risco_display': dashboard.get_risco_display(),
+                'dashboard_risco_color': dashboard.get_risk_color(),
                 'dashboard_created': dashboard.created_at,
                 'dashboard_updated': dashboard.updated_at,
                 'cameras': [{
-                    'id': camera.camera_id,
-                    'location': camera.camera_loc,
-                    'status': camera.camera_status,
-                    'link': camera.camera_link,
+                    'id': camera.camera_id,  # Corrigido: usar camera_id em vez de id
+                    'location': camera.camera_loc,  # Corrigido: usar camera_loc
+                    'status': camera.camera_status,  # Corrigido: usar camera_status
+                    'link': camera.camera_link,  # Corrigido: usar camera_link
                 } for camera in cameras],
                 'cameras_count': cameras.count(),
                 'can_add_camera': cameras.count() < 3,
@@ -39,7 +42,10 @@ class DashboardView(TemplateView):
                 'error': 'Dashboard não encontrado',
                 'cameras': [],
                 'cameras_count': 0,
-                'can_add_camera': False
+                'can_add_camera': False,
+                'dashboard_risco': 'baixo',
+                'dashboard_risco_display': 'Baixo',
+                'dashboard_risco_color': '#10b981'
             })
             
         return context

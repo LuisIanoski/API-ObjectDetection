@@ -20,7 +20,17 @@ class DashboardCameraSerializer(serializers.ModelSerializer):
 
 class DashboardSerializer(serializers.ModelSerializer):
     cameras = DashboardCameraSerializer(many=True, read_only=True)
+    risco_display = serializers.CharField(source='get_risco_display', read_only=True)
+    risco_color = serializers.CharField(source='get_risk_color', read_only=True)
 
     class Meta:
         model = Dashboard
-        fields = ['dashboard_id', 'name', 'cameras', 'created_at']
+        fields = [
+            'dashboard_id', 
+            'name', 
+            'cameras', 
+            'risco',
+            'risco_display',
+            'risco_color',
+            'created_at'
+        ]

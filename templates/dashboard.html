@@ -3,71 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Dashboard</title>
+    <title>Chirp Dashboard</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="dashboard" data-dashboard-id="{{ dashboard_id }}">
-        <div class="header">
-            <h1>Camera Monitoring Dashboard</h1>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="logo">
+                <span class="chirp-logo">Chirp</span>
+                <span class="dashboard-text">Dashboard</span>
+            </div>
         </div>
+    </header>
 
-        <div class="cam-info">
-            <div class="camera-details">
-                <p>Camera: 
-                    <select id="cameraSelect" class="camera-select">
-                        <option value="">Selecione uma câmera</option>
-                        {% for camera in cameras %}
-                            <option value="{{ camera.id }}">{{ camera.id }} - {{ camera.location }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
-                <p>Status: <span id="cameraStatus">Aguardando...</span></p>
+    <!-- Main Dashboard -->
+    <main class="dashboard">
+        <!-- Top Section -->
+        <div class="top-section">
+            <!-- Camera Selector -->
+            <div class="camera-section">
+                <label>Camera:</label>
+                <select id="cameraSelect" class="camera-select">
+                    <option value="">CAM YYY</option>
+                    {% for camera in cameras %}
+                        <option value="{{ camera.id }}">{{ camera.id }}</option>
+                    {% endfor %}
+                </select>
             </div>
-        </div>
-        <div class="video-section">
-            <h2>Camera Feed</h2>
-            <div class="video-container">
-                <img id="cameraFeed" src="" alt="Camera Feed">
-            </div>
-            <div class="video-datetime">
-                <div class="current-time" id="currentTime"></div>
-            </div>
-            <div class="weather">
-                <div id="weather-container">
-                  
+
+            <!-- Status -->
+            <div class="status-section">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span id="cameraStatus">Status</span>
                 </div>
             </div>
-        </div>
-        <div class="place-risk">
-            <div>
-                <h2 id="place-name">Connecting...</h2>
-                <div id="place-loc">Loading...</div>
+
+            <!-- Video Feed -->
+            <div class="video-section">
+                <div class="video-container" id="videoContainer">
+                    <div class="video-placeholder">
+                        <i class="fas fa-video-slash"></i>
+                        <div class="placeholder-text">
+                            <h3>Unable to access the camera</h3>
+                            <p>Please contact the administrator of the website</p>
+                        </div>
+                    </div>
+                    <img id="cameraFeed" src="" alt="Camera Feed" style="display: none;">
+                </div>
             </div>
-            <div>
-                <h2 class='place-'> Risco:</h2>
-                <div id="riskLevel">Loading...</div>
+
+            <!-- Location Info (segunda linha, primeira coluna) -->
+            <div class="location-card">
+                <h3>Nome Lugar</h3>
+                <div class="location-details">
+                    <i class="fas fa-map-marker-alt text-red"></i>
+                    <span id="locationName">Cdd, Estd, País</span>
+                </div>
+            </div>
+
+            <!-- Risk Assessment (segunda linha, segunda coluna) -->
+            <div class="risk-card">
+                <h3>Risco: <span class="risk-level" id="riskLevel" style="color: {{ dashboard_risco_color }}">{{ dashboard_risco_display }}</span></h3>
+                <div class="risk-details">
+                    <i class="fas fa-tint text-blue"></i>
+                    <span id="riskDescription">Nível da água</span>
+                </div>
+            </div>
+
+            <!-- DateTime Display (segunda linha, terceira coluna) -->
+            <div class="datetime-display">
+                <div id="currentDateTime">hh:MM - DD/MM/YYYY</div>
             </div>
         </div>
-        <div class="detections-table">
-                <table id="detectionsTable">
+
+        <!-- Bottom Section -->
+        <div class="bottom-section">
+            <!-- Detections Table -->
+            <div class="detections-table">
+                <table>
                     <thead>
                         <tr>
-                            <th>Horário</th>
+                            <th>Data</th>
                             <th>Objeto</th>
-                            <th>Confiança</th>
+                            <th>Hora</th>
                         </tr>
                     </thead>
-                    <tbody id="detectionsBody"></tbody>
+                    <tbody id="detectionsBody">
+                        <!-- Detections will be populated here -->
+                    </tbody>
                 </table>
             </div>
+
+            <!-- Weather Section -->
+            <div class="weather-section">
+                <h3>Segunda</h3>
+                <div class="weather-info">
+                    <div class="weather-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="weather-details">
+                        <div class="precipitation">8mm</div>
+                        <div class="temperature">14 - 17°C</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Info Panel -->
+            <div class="info-panel">
+                <!-- This can be customized for additional information -->
+            </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        // Initialize dashboard ID before loading dashboard.js
+        // Inicializar dados do dashboard
         window.DASHBOARD_ID = "{{ dashboard_id }}";
+        window.INITIAL_DATA = {
+            dashboard_id: "{{ dashboard_id }}",
+            dashboard_name: "{{ dashboard_name|default:'Dashboard' }}",
+            dashboard_risco: "{{ dashboard_risco }}",
+            dashboard_risco_display: "{{ dashboard_risco_display }}",
+            dashboard_risco_color: "{{ dashboard_risco_color }}",
+            cameras: [
+                {% for camera in cameras %}
+                {
+                    id: "{{ camera.id }}",
+                    location: "{{ camera.location }}",
+                    status: "{{ camera.status }}",
+                    link: "{{ camera.link }}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        };
     </script>
     <script src="{% static 'js/dashboard.js' %}"></script>
 </body>
