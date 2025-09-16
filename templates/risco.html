@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chirp Dashboard - Gerenciamento de Risco</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/risco.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="logo">
+                <span class="chirp-logo">Chirp</span>
+                <span class="dashboard-text">Gerenciamento de Risco</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard">
+        <!-- Risk Management Section -->
+        <div class="risk-management-section">
+            <div class="risk-header">
+                <h2 class="risk-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Gerenciamento de Risco
+                </h2>
+                <div class="datetime-display">
+                    <div id="currentDateTime">--:-- - --/--/----</div>
+                </div>
+            </div>
+
+            <!-- Current Risk Status -->
+            <div class="risk-current-status">
+                <div class="risk-indicator" id="riskIndicator"></div>
+                <div>
+                    <strong>Status Atual:</strong>
+                    <span class="risk-level-badge" id="currentRiskBadge">Carregando...</span>
+                </div>
+                <div style="margin-left: auto;">
+                    <small style="color: #9ca3af;" id="lastUpdated">Última atualização: --</small>
+                </div>
+            </div>
+
+            <!-- Risk Actions -->
+            <div class="risk-actions">
+                <button class="risk-action-btn" onclick="riskManager.openModal()">
+                    <i class="fas fa-edit"></i>
+                    <span>Alterar Nível</span>
+                    <small>Modificar o nível de risco atual</small>
+                </button>
+                
+                <button class="risk-action-btn" onclick="riskManager.showRiskHistory()" id="historyBtn">
+                    <i class="fas fa-history"></i>
+                    <span>Histórico</span>
+                    <small>Ver alterações anteriores</small>
+                </button>
+                
+                <button class="risk-action-btn" onclick="riskManager.escalateRisk()" id="escalateBtn">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Escalar Risco</span>
+                    <small>Aumentar nível de alerta</small>
+                </button>
+                
+                <button class="risk-action-btn" onclick="riskManager.deescalateRisk()" id="deescalateBtn">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>Reduzir Risco</span>
+                    <small>Diminuir nível de alerta</small>
+                </button>
+            </div>
+
+            <!-- Quick Actions -->
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 10px; color: #e5e7eb; font-weight: 500;">
+                    Ações Rápidas:
+                </label>
+                <div class="risk-quick-actions" id="quickActions">
+                    <!-- Será preenchido via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Risk Information -->
+            <div class="risk-history">
+                <h4><i class="fas fa-info-circle"></i> Informações do Nível Atual</h4>
+                <p id="riskDescription" style="color: #d1d5db; line-height: 1.5;">
+                    Carregando informações...
+                </p>
+            </div>
+        </div>
+
+        <!-- Dashboard Integration -->
+        <div class="top-section">
+            <!-- Camera Selector -->
+            <div class="camera-section">
+                <label>Dashboard:</label>
+                <select class="camera-select" disabled>
+                    <option value="">{{ dashboard_id|default:"Dashboard ID" }}</option>
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div class="status-section">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Sistema Ativo</span>
+                </div>
+            </div>
+
+            <!-- Risk Summary Card -->
+            <div class="video-section" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 20px; opacity: 0.7;" id="riskIcon"></i>
+                <h3 style="margin-bottom: 10px;">Nível de Risco</h3>
+                <div style="font-size: 24px; font-weight: bold; margin-bottom: 10px;" id="mainRiskDisplay">--</div>
+                <div style="font-size: 14px; opacity: 0.7;" id="mainRiskDescription">--</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Risk Change Modal -->
+    <div id="riskModal" class="risk-modal">
+        <div class="risk-modal-content">
+            <div class="risk-modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Alterar Nível de Risco</h3>
+                <button class="risk-modal-close" onclick="riskManager.closeModal()">&times;</button>
+            </div>
+            <div class="risk-modal-body">
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <p><strong>Nível atual:</strong> <span id="currentRiskDisplay">--</span></p>
+                </div>
+                
+                <div class="risk-selector">
+                    <label for="newRiskLevel">Novo nível de risco:</label>
+                    <select id="newRiskLevel" class="risk-select">
+                        <option value="">Selecione um nível</option>
+                        <!-- Será preenchido via JavaScript -->
+                    </select>
+                </div>
+                
+                <div class="risk-preview" id="riskPreview" style="display: none;">
+                    <div class="risk-preview-item">
+                        <span class="risk-preview-label">Novo nível:</span>
+                        <span id="riskPreviewText" class="risk-preview-text">--</span>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 14px; color: #9ca3af;" id="riskPreviewDescription">
+                        --
+                    </div>
+                </div>
+
+                <div class="risk-escalation-warning" id="escalationWarning" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Atenção:</strong> Você está escalando o nível de risco. 
+                        Esta ação pode disparar alertas automatizados.
+                    </div>
+                </div>
+                
+                <div class="risk-confirmation">
+                    <label>
+                        <input type="checkbox" id="confirmRiskChange"> 
+                        Confirmo que desejo alterar o nível de risco
+                    </label>
+                </div>
+            </div>
+            <div class="risk-modal-footer">
+                <button class="btn btn-secondary" onclick="riskManager.closeModal()">Cancelar</button>
+                <button class="btn btn-primary" id="confirmRiskBtn" onclick="riskManager.updateRisk()" disabled>
+                    <i class="fas fa-save"></i> Alterar Risco
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar dados do dashboard
+        window.DASHBOARD_ID = "{{ dashboard_id|default:'dashboard-01' }}";
+        window.INITIAL_DATA = {
+            dashboard_id: "{{ dashboard_id|default:'dashboard-01' }}",
+            dashboard_name: "{{ dashboard_name|default:'Dashboard Principal' }}",
+            dashboard_risco: "{{ dashboard_risco|default:'baixo' }}",
+            dashboard_risco_display: "{{ dashboard_risco_display|default:'Baixo' }}",
+            dashboard_risco_color: "{{ dashboard_risco_color|default:'#10b981' }}"
+        };
+    </script>
+
+    <script src="{% static 'js/risco.js' %}"></script>
+</body>
+</html>

@@ -54,6 +54,10 @@ body {
     background-clip: text;
 }
 
+.chirp-logo img {
+    height: 40px;
+}
+
 .dashboard-text {
     font-size: 24px;
     color: white;

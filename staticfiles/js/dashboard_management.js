@@ -22,7 +22,8 @@ class DashboardManager {
     async createDashboard() {
         const data = {
             dashboard_id: document.getElementById('dashboardId').value,
-            name: document.getElementById('dashboardName').value
+            name: document.getElementById('dashboardName').value,
+            risco: document.getElementById('dashboardRisco').value
         };
 
         try {

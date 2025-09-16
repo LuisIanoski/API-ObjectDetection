@@ -54,6 +54,10 @@ body {
     background-clip: text;
 }
 
+.chirp-logo img {
+    height: 40px;
+}
+
 .dashboard-text {
     font-size: 24px;
     color: white;
@@ -70,9 +74,42 @@ body {
 
 .top-section {
     display: grid;
-    grid-template-columns: 300px 200px 1fr;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-rows: auto auto;
     gap: 25px;
     align-items: start;
+}
+
+/* Posicionamento específico dos elementos */
+.camera-section {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.status-section {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.video-section {
+    grid-column: 3;
+    grid-row: 1 / 3; /* Ocupa as duas linhas */
+}
+
+.location-card {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.risk-card {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.datetime-display {
+    grid-column: 3;
+    grid-row: 2;
+    align-self: end; /* Alinha no final da segunda linha */
 }
 
 .middle-section {
@@ -160,16 +197,21 @@ body {
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    grid-column: 3;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
 }
 
 .video-container {
     width: 100%;
-    height: 300px;
+    aspect-ratio: 16/9;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    flex: 1;
 }
 
 .video-placeholder {
@@ -246,12 +288,16 @@ body {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 15px;
-    padding: 25px;
+    padding: 15px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    grid-column: 3;
+    grid-row: 2;
+    align-self: end;
+    height: fit-content;
 }
 
 #currentDateTime {
@@ -267,6 +313,8 @@ body {
     border-radius: 15px;
     padding: 25px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    max-height: 250px;
+    overflow-y: auto;
 }
 
 .detections-table table {
@@ -276,11 +324,13 @@ body {
 
 .detections-table th {
     background: rgba(107, 70, 193, 0.3);
-    padding: 15px;
+    padding: 12px;
     text-align: left;
     font-weight: 600;
     color: #f9fafb;
     border-radius: 8px 8px 0 0;
+    top: 0;
+    z-index: 1;
 }
 
 .detections-table th:first-child {
@@ -292,13 +342,18 @@ body {
 }
 
 .detections-table td {
-    padding: 12px 15px;
+    padding: 10px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: #d1d5db;
+    font-size: 14px;
 }
 
 .detections-table tbody tr:hover {
     background: rgba(255, 255, 255, 0.05);
+}
+
+.detections-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 /* Weather Section */
@@ -360,12 +415,39 @@ body {
 @media (max-width: 1200px) {
     .top-section {
         grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto auto;
         gap: 20px;
     }
     
-    .middle-section {
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+    .camera-section {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    
+    .status-section {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .video-section {
+        grid-column: 1;
+        grid-row: 3;
+    }
+    
+    .location-card {
+        grid-column: 1;
+        grid-row: 4;
+    }
+    
+    .risk-card {
+        grid-column: 1;
+        grid-row: 5;
+    }
+    
+    .datetime-display {
+        grid-column: 1;
+        grid-row: 6;
+        align-self: stretch;
     }
     
     .bottom-section {
@@ -392,11 +474,17 @@ body {
         font-size: 18px;
     }
     
-    .middle-section {
+    .top-section {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
     
     .video-container {
-        height: 200px;
+        aspect-ratio: 16/9;
+    }
+    
+    .bottom-section {
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
 }

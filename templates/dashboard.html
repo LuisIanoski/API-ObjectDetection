@@ -16,7 +16,7 @@
                 <i class="fas fa-bars"></i>
             </div>
             <div class="logo">
-                <span class="chirp-logo">Chirp</span>
+                <span class="chirp-logo"><img src="{% static 'img/logo.png' %}" alt=""></span>
                 <span class="dashboard-text">Dashboard</span>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="camera-section">
                 <label>Camera:</label>
                 <select id="cameraSelect" class="camera-select">
-                    <option value="">CAM YYY</option>
+                    <option value="">Selecione a câmera</option>
                     {% for camera in cameras %}
                         <option value="{{ camera.id }}">{{ camera.id }}</option>
                     {% endfor %}

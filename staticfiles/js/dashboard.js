@@ -168,7 +168,7 @@ async function updateDetections() {
 
         detectionsBody.innerHTML = '';
         
-        const latestDetections = Array.isArray(data) ? data.slice(0, 10) : [];
+        const latestDetections = Array.isArray(data) ? data.slice(0, 3) : [];
         
         if (latestDetections.length > 0) {
             latestDetections.forEach(detection => {
@@ -209,20 +209,27 @@ function updateWeatherInfo() {
     }
 }
 
-// Atualizar informações de risco (pode ser customizado conforme necessidade)
+// Atualizar informações de risco do dashboard
 function updateRiskInfo() {
-    // Esta função pode ser expandida para calcular risco real baseado nas detecções
-    const riskLevel = document.getElementById('riskLevel');
-    const riskDescription = document.getElementById('riskDescription');
-    
-    if (riskLevel) {
-        // Exemplo de lógica de risco - pode ser customizada
-        riskLevel.textContent = 'Baixo';
-        riskLevel.style.color = '#10b981';
-    }
-    
-    if (riskDescription) {
-        riskDescription.textContent = 'Nível normal';
+    if (window.INITIAL_DATA) {
+        const riskLevel = document.getElementById('riskLevel');
+        const riskDescription = document.getElementById('riskDescription');
+        
+        if (riskLevel) {
+            riskLevel.textContent = window.INITIAL_DATA.dashboard_risco_display;
+            riskLevel.style.color = window.INITIAL_DATA.dashboard_risco_color;
+        }
+        
+        if (riskDescription) {
+            // Mapear descrições baseadas no nível de risco
+            const riskDescriptions = {
+                'baixo': 'Nível normal',
+                'medio': 'Atenção necessária',
+                'alto': 'Situação de alerta',
+                'critico': 'Perigo iminente'
+            };
+            riskDescription.textContent = riskDescriptions[window.INITIAL_DATA.dashboard_risco] || 'Nível da água';
+        }
     }
 }
 
