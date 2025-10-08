@@ -5,3 +5,6 @@ ultralytics
 numpy
 torch
 channels
+mysqlclient
+python-dotenv
+gunicorn
